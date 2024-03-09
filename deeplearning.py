@@ -7,7 +7,13 @@ from extract import extract_text_from_image
 
 
 
-model = tf.keras.models.load_model('./static/models/my_object_detection.keras')
+#loading the pre-trained model
+try:
+    model = tf.keras.models.load_model('./static/models/my_object_detection.keras')
+    print("Model loaded successfully!")
+except Exception as e:
+    print("Error loading the model:", e)
+    
 
 def object_detection(path,filename):
     # read image
@@ -42,9 +48,13 @@ def OCR(path,filename):
     roi = img[ymin:ymax,xmin:xmax]
     roi_bgr = cv2.cvtColor(roi,cv2.COLOR_RGB2BGR)
     cv2.imwrite('./static/roi/{}'.format(filename),roi_bgr)
-
-    text=extract_text_from_image(roi)
-    return text
+    #callling to easyor to extract the text and return 
+    try:
+        text=extract_text_from_image(roi)
+        return text
+    except Exception as e:
+        print("Error :", e)  
+    
 
 
 
